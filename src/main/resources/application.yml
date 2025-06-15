@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: observability
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/observability_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 0
+      idle-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: agent_manager
+
+
+server:
+  port: 4000
+  servlet:
+    context-path: /${spring.application.name}/api/
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+  level:
+    root: INFO
+
+multitenancy:
+  header-name: x-tenant-key
+  default-tenant: master
