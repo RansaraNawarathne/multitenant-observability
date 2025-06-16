@@ -10,6 +10,7 @@ import com.aurora.observability.mapper.AgentResponseDTOMapper;
 import com.aurora.observability.mapper.CreateAgentRequestEntityMapper;
 import com.aurora.observability.repository.AgentRepository;
 import com.aurora.observability.service.AgentService;
+import com.aurora.observability.utility.ObservabilityLogger;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class AgentServiceImpl implements AgentService {
     @Transactional
     @Override
     public void createAgent(CreateAgentRequestDTO createAgentRequestDTO) {
+        ObservabilityLogger.log(getClass().getName(), "Successfully agent created");
         Agent agentData = createAgentRequestEntityMapper.toEntity(createAgentRequestDTO);
 
         if (agentData.getType().equals(AgentType.CLUSTER)) {
@@ -40,6 +42,7 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public List<AgentResponseDTO> getAllAgents() throws ResourceNotFoundException{
+        ObservabilityLogger.log(getClass().getName(), "Retrieved all agents");
         List<Agent> agents = agentRepository.findAll();
 
         if (agents.isEmpty()) {
