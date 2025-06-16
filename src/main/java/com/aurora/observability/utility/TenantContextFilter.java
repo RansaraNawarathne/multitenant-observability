@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,6 +21,9 @@ public class TenantContextFilter extends OncePerRequestFilter {
     @Value("${multitenancy.default-tenant}")
     private String defaultTenant;
 
+    @Value("${spring.application.name}")
+    private String serviceName;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var tenantIdentifier = request.getHeader(tenantHeader);
@@ -31,9 +35,13 @@ public class TenantContextFilter extends OncePerRequestFilter {
         }
 
         try {
+            MDC.put("tenantId", tenantIdentifier != null ? tenantIdentifier : defaultTenant);
+//            MDC.put("userId", userId != null ? userId : "anonymous");
+            MDC.put("asset", serviceName);
             filterChain.doFilter(request, response);
         } finally {
             TenantContextHolder.resetTenant();
+            MDC.clear();
         }
     }
 }
