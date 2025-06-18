@@ -19,6 +19,12 @@ spring:
       hibernate:
         default_schema: agent_manager
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/observability
+          jwk-set-uri: http://localhost:8080/realms/observability/protocol/openid-connect/certs
 
 server:
   port: 4000
@@ -34,3 +40,9 @@ logging:
 multitenancy:
   header-name: x-tenant-key
   default-tenant: master
+
+jwt:
+  auth:
+    converter:
+      resource-id: observability-backend-app
+      principle-attribute: preferred_username
