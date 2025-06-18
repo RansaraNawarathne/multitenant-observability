@@ -7,6 +7,7 @@ import com.aurora.observability.service.AgentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class AgentController {
         this.agentService = agentService;
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping()
     public ResponseEntity<ResponseDTO> createAgent (@PathVariable UUID projectId, @Valid @RequestBody CreateAgentRequestDTO payload) {
         agentService.createAgent(payload);
@@ -36,6 +38,7 @@ public class AgentController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('user')")
     @GetMapping()
     public ResponseEntity<ResponseDTO> getAllAgents (@PathVariable UUID projectId) {
         List<AgentResponseDTO> agents = agentService.getAllAgents();
