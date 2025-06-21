@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'observability_metrics'
+    metrics_path: '/observability/api/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:4000']
+# If you're running Spring Boot locally
