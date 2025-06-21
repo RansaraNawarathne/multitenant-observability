@@ -32,6 +32,8 @@ server:
     context-path: /${spring.application.name}/api/
 
 logging:
+  file:
+    name: logs/app.log
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
   level:
