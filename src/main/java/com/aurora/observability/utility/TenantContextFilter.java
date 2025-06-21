@@ -6,6 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,8 +39,15 @@ public class TenantContextFilter extends OncePerRequestFilter {
         }
 
         try {
+            String userId = null;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof JwtAuthenticationToken jwtAuth) {
+                Jwt jwt = jwtAuth.getToken();
+                userId = jwt.getClaimAsString("sub");
+            }
+
             MDC.put("tenantId", tenantIdentifier != null ? tenantIdentifier : defaultTenant);
-//            MDC.put("userId", userId != null ? userId : "anonymous");
+            MDC.put("userId", userId != null ? userId : "anonymous");
             MDC.put("asset", serviceName);
             filterChain.doFilter(request, response);
         } finally {
