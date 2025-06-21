@@ -23,7 +23,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/actuator/**").permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(jwtConverter)
                 ))
