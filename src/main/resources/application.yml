@@ -46,3 +46,16 @@ jwt:
     converter:
       resource-id: observability-backend-app
       principle-attribute: preferred_username
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
