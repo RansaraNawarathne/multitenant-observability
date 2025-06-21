@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Keycloak ###
+keycloak-26.2.5/
+
+### Application Logs ###
+logs/*.log
+
+### promtail position file ###
+temp/*.yaml
