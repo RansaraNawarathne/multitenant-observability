@@ -11,8 +11,6 @@ public class ObservabilityLogger {
         MDC.put("resource", resource);
         MDC.put("action", action);
         logger.info("Business event triggered");
-        MDC.remove("resource");
-        MDC.remove("action");
     }
 
 }

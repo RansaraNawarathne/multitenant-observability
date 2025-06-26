@@ -34,7 +34,6 @@ public class ProjectContextInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) {
-        MDC.remove("projectId");
         ProjectContextHolder.clear();
     }
 }
