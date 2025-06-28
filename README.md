@@ -44,9 +44,9 @@ This project demonstrates **end-to-end observability** for Java Spring Boot micr
 
 ├── logs/ # Application log output (tailed by Promtail) <br />
 ├── temp/ # Promtail position tracking <br />
-├── promtail-config.yml # Log parsing config <br />
-├── prometheus.yml # Prometheus scrape config <br />
-├── docker-compose.yml # All observability services <br />
+├── devops/ promtail-config.yml # Log parsing config <br />
+├── devops/ prometheus.yml # Prometheus scrape config <br />
+├── devops/ docker-compose.yml # All observability services <br />
 └── src/ # Spring Boot application <br />
 
 
