@@ -28,4 +28,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(TenantNotFoundException.class)
+    public ResponseEntity<Object> handleTenantNotFound (TenantNotFoundException ex) {
+        ResponseDTO body = ResponseDTO.builder()
+                .timestamp(LocalDateTime.now())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .error("Tenant Not Found")
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }
