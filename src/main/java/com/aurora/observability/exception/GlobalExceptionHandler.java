@@ -40,9 +40,6 @@ import java.time.LocalDateTime;
  * }
  * </pre>
  * </p>
- *
- * @author Malindu
- * @since 1.0
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
