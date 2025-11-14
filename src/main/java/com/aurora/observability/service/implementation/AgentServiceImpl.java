@@ -18,6 +18,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementation of the {@link AgentService} interface providing business logic
+ * for creating and retrieving {@link Agent} entities.
+ * <p>
+ * This service handles conversion between DTOs and entities, applies domain-level
+ * validation and defaulting rules, logs activity, and interacts with the {@link AgentRepository}
+ * for persistence operations.
+ */
 @RequiredArgsConstructor
 @Service
 public class AgentServiceImpl implements AgentService {
@@ -26,22 +34,45 @@ public class AgentServiceImpl implements AgentService {
     private final CreateAgentRequestEntityMapper createAgentRequestEntityMapper;
     private final AgentResponseDTOMapper agentResponseDTOMapper;
 
+    /**
+     * Creates a new {@link Agent} using the provided request data.
+     * <p>
+     * The method:
+     * <ul>
+     *     <li>Logs the create operation for observability.</li>
+     *     <li>Maps the incoming {@link CreateAgentRequestDTO} to an {@link Agent} entity.</li>
+     *     <li>Assigns a generated URL and sets {@link AgentStatus#ONLINE} if the agent is of type {@link AgentType#CLUSTER}.</li>
+     *     <li>Saves the new agent to the repository.</li>
+     * </ul>
+     *
+     * @param createAgentRequestDTO the request payload containing data required to create a new agent
+     */
     @Transactional
     @Override
     public void createAgent(CreateAgentRequestDTO createAgentRequestDTO) {
         ObservabilityLogger.log(getClass().getName(), "Successfully agent created");
         Agent agentData = createAgentRequestEntityMapper.toEntity(createAgentRequestDTO);
 
+        // Apply default settings for cluster-type agents
         if (agentData.getType().equals(AgentType.CLUSTER)) {
-            agentData.setUrl("http://aurora.dev.agent-manager/"+ UUID.randomUUID()+"/");
+            agentData.setUrl("http://aurora.dev.agent-manager/" + UUID.randomUUID() + "/");
             agentData.setStatus(AgentStatus.ONLINE);
         }
 
         agentRepository.save(agentData);
     }
 
+    /**
+     * Retrieves all existing {@link Agent} records.
+     * <p>
+     * The method logs the retrieval process and converts entities into response DTOs.
+     * If no agents are found, a {@link ResourceNotFoundException} is thrown.
+     *
+     * @return a list of {@link AgentResponseDTO} objects representing all agents
+     * @throws ResourceNotFoundException if no agents exist in the system
+     */
     @Override
-    public List<AgentResponseDTO> getAllAgents() throws ResourceNotFoundException{
+    public List<AgentResponseDTO> getAllAgents() throws ResourceNotFoundException {
         ObservabilityLogger.log(getClass().getName(), "Retrieved all agents");
         List<Agent> agents = agentRepository.findAll();
 
