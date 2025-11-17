@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Mapper component responsible for converting {@link CreateAgentRequestDTO} objects
- * into {@link Agent} entities.
+ * into {@link Agent} entity.
  * <p>
  * This class helps isolate the mapping logic between the API request layer
  * and the persistence layer, ensuring a clean separation of concerns.
